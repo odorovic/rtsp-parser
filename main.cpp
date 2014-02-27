@@ -1,14 +1,49 @@
 
 #include "http11_parser.h"
 
-static const char* http =
+#include <stdio.h>
+
+static char http[] =
 "GET /index.html HTTP/1.1\r\n"
 "Host: www.example.com\r\n"
-"\r\n";
+"\r\n"
+"Sdp goes here I guess";
+
+
+void element_callback(
+        void *data,
+        const char *at,
+        size_t length)
+{
+    printf("element!!! %.*s\n", (int)length, at);
+}
+
+void field_callback(
+        void *data,
+        const char *field,
+        size_t flen,
+        const char *value,
+        size_t vlen)
+{
+    printf("field!!! %.*s %.*s\n", (int)flen, field, (int)vlen, value);
+}
 
 int main()
 {
-	http_parser parser;
-	http_parser_init(&parser);
-	http_parser_execute(&parser, http, sizeof(http), 0);
+    size_t nread;
+    http_parser parser;
+
+    parser.http_field = &field_callback;
+    parser.request_method = &element_callback;
+    parser.request_uri = &element_callback;
+    parser.fragment = &element_callback;
+    parser.request_path = &element_callback;
+    parser.query_string = &element_callback;
+    parser.http_version = &element_callback;
+    parser.header_done = &element_callback;
+
+
+    http_parser_init(&parser);
+    nread = http_parser_execute(&parser, http, sizeof(http)-1, 0);
+    printf("nread: %lu\n", nread);
 }

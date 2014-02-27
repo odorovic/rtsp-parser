@@ -133,7 +133,6 @@ size_t http_parser_execute(http_parser *parser, const char *buffer, size_t len, 
 
     if(parser->body_start) {
         /* final \r\n combo encountered so stop right here */
-        %%write eof;
         parser->nread++;
     }
 
@@ -143,8 +142,6 @@ size_t http_parser_execute(http_parser *parser, const char *buffer, size_t len, 
 int http_parser_finish(http_parser *parser)
 {
     int cs = parser->cs;
-
-    %%write eof;
 
     parser->cs = cs;
 

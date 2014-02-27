@@ -23,10 +23,14 @@ endif(RAGEL)
 
 ragel_gen(http11_parser)
 
-set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/src/http11_parser.cpp PROPERTIES GENERATED 1)
+set_source_files_properties(
+    ${CMAKE_CURRENT_BINARY_DIR}/http11_parser.cpp
+    PROPERTIES GENERATED 1)
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 add_executable(rtsptest
     main.cpp
-    ${CMAKE_CURRENT_BINARY_DIR}/src/http11_parser.cpp
+    ${CMAKE_CURRENT_BINARY_DIR}/http11_parser.cpp
 )
 add_dependencies(rtsptest ragel_http11_parser)
