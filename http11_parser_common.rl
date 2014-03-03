@@ -38,9 +38,9 @@ Request_URI = ( "*" | absolute_uri | absolute_path ) >mark %request_uri;
 Fragment = ( uchar | reserved )* >mark %fragment;
 Method = ( upper | digit | safe ){1,20} >mark %request_method;
 
-http_number = ( digit+ "." digit+ ) ;
-HTTP_Version = ( "HTTP/" http_number ) >mark %http_version ;
-Request_Line = ( Method " " Request_URI ("#" Fragment){0,1} " " HTTP_Version CRLF ) ;
+rtsp_number = ( digit+ "." digit+ ) ;
+RTSP_Version = ( "RTSP/" rtsp_number ) >mark %http_version ;
+Request_Line = ( Method " " Request_URI ("#" Fragment){0,1} " " RTSP_Version CRLF ) ;
 
 field_name = ( token -- ":" )+ >start_field $snake_upcase_field %write_field;
 

@@ -9,6 +9,13 @@ static char http[] =
 "\r\n"
 "Sdp goes here I guess";
 
+static char rtsp_options[] =
+"OPTIONS rtsp://example.com/media.mp4 RTSP/1.0\r\n"
+"CSeq: 1\r\n"
+"Require: implicit-play\r\n"
+"Proxy-Require: gzipped-messages\r\n"
+"\r\n";
+
 
 void element_callback(
         void *data,
@@ -44,6 +51,10 @@ int main()
 
 
     http_parser_init(&parser);
-    nread = http_parser_execute(&parser, http, sizeof(http)-1, 0);
+    nread = http_parser_execute(
+            &parser,
+            rtsp_options,
+            sizeof(rtsp_options)-1,
+            0);
     printf("nread: %lu\n", nread);
 }
